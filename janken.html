@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/sample.css">
+  <title>じゃんけん</title>
+</head>
+
+<body>
+  <header>
+    <h1>じゃんけん</h1>
+  </header>
+
+  <main>
+    <ul>
+      <li id="gu_btn">グー</li>
+      <li id="cho_btn">チョキ</li>
+      <li id="par_btn">パー</li>
+    </ul>
+    <div id="com_hand">コンピュータの出した手は？</div>
+    <div id="result">結果は？</div>
+    <div class="katimake">
+      <div>勝った回数</div>
+      <div id="player_wins">0</div>
+    </div>
+    <div class="katimake">
+      <div>負けた回数</div>
+      <div id="player_losses">0</div>
+    </div>
+    <div class="katimake">
+      <div>勝率</div>
+      <div id="win_percentage">0%</div>
+    </div>
+    <div class="katimake">
+      <div>最大連勝数</div>
+      <div id="max_win_streak">0</div>
+    </div>
+
+  </main>
+
+  <footer>フッター</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+
+    let playerWins = 0;
+    let playerLosses = 0;
+    let totalGames = 0;
+    let currentWinStreak = 0;
+    let maxWinStreak = 0;
+
+
+    function calculateWinPercentage(wins, losses) {
+      if (wins === 0 && losses === 0) {
+        return 0;
+      } else {
+        return Math.round((wins / (wins + losses)) * 100);
+      }
+    }
+    function updateWinPercentage() {
+      const totalGames = playerWins + playerLosses;
+      const winPercentage = totalGames > 0 ? ((playerWins / totalGames) * 100).toFixed(2) : 0;
+      $("#win_percentage").text(winPercentage + "%");
+    }
+
+    function updateWinStreak() {
+      if ($("#result").text() === "あなたの勝ち！") {
+        currentWinStreak++;
+        if (currentWinStreak > maxWinStreak) {
+          maxWinStreak = currentWinStreak;
+          $("#max_win_streak").text(maxWinStreak);
+        }
+      } else {
+        currentWinStreak = 0;
+      }
+      $("#max_win_streak").text(maxWinStreak);
+    }
+
+    $("#gu_btn").on("click", function () {
+      totalGames++;
+      const randomNumber = Math.floor(Math.random() * 3);
+      console.log(randomNumber);
+
+      if (randomNumber === 0) {
+        $("#com_hand").text("グー");
+        $("#result").text("あいこ");
+      } else if (randomNumber === 1) {
+        $("#com_hand").text("チョキ");
+        $("#result").text("あなたの勝ち！");
+        playerWins++;
+      }
+      else if (randomNumber === 2) {
+        $("#com_hand").text("パー");
+        $("#result").text("あなたの負け");
+        playerLosses++;
+      }
+
+      updateWinPercentage();
+      $("#player_wins").text(playerWins); // 勝ち表示
+      $("#player_losses").text(playerLosses);//負け表示
+      updateWinPercentage(); //勝率表示
+      updateWinStreak(); //最大連勝数表示
+    })
+
+    $("#cho_btn").on("click", function () {
+      const randomNumber = Math.floor(Math.random() * 3);
+      console.log(randomNumber);
+
+      if (randomNumber === 0) {
+        $("#com_hand").text("グー");
+        $("#result").text("あなたの負け");
+        playerLosses++;
+      }
+      else if (randomNumber === 1) {
+        $("#com_hand").text("チョキ");
+        $("#result").text("あいこ");
+      }
+      else if (randomNumber === 2) {
+        $("#com_hand").text("パー");
+        $("#result").text("あなたの勝ち");
+        playerWins++;
+      }
+      $("#player_wins").text(playerWins); // 勝ち表示
+      $("#player_losses").text(playerLosses);//負け表示
+      updateWinPercentage(); //勝率表示
+      updateWinStreak(); //最大連勝数表示
+    })
+
+    $("#par_btn").on("click", function () {
+      const randomNumber = Math.floor(Math.random() * 3);
+      console.log(randomNumber);
+
+      if (randomNumber === 0) {
+        $("#com_hand").text("グー");
+        $("#result").text("あなたの勝ち");
+        playerWins++;
+      } else if (randomNumber === 1) {
+        $("#com_hand").text("チョキ");
+        $("#result").text("あなたの負け");
+        playerLosses++;
+      }
+      else if (randomNumber === 2) {
+        $("#com_hand").text("パー");
+        $("#result").text("あいこ");
+      }
+      $("#player_wins").text(playerWins); // 勝ち表示
+      $("#player_losses").text(playerLosses);//負け表示
+      updateWinPercentage(); //勝率表示
+      updateWinStreak(); //最大連勝数表示
+    })
+
+  </script>
+
+</body>
+
+</html>
